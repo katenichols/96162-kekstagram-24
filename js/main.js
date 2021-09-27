@@ -13,8 +13,6 @@ const randomIntNumber = (min, max) => {
 
 randomIntNumber(4,2);
 
-const commentLengthCheck = (commentString, commentMaxLength) => {
-  commentString.length <= commentMaxLength;
-};
+const commentLengthCheck = (commentString, commentMaxLength) => commentString.length <= commentMaxLength;
 
 commentLengthCheck('Проверка текста на длину строки', 20);

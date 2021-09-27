@@ -9,8 +9,12 @@ const randomIntNumber = (min, max) => {
   }
 
   return Math.floor(Math.random() * (max - min + 1)) + min; //источник - MDN
-}
+};
+
+randomIntNumber(4,2);
 
 const commentLengthCheck = (commentString, commentMaxLength) => {
-  return commentString.length <= commentMaxLength;
-}
+  commentString.length <= commentMaxLength;
+};
+
+commentLengthCheck('Проверка текста на длину строки', 20);

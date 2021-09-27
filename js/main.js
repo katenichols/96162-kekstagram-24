@@ -1,20 +1,16 @@
-function getRandomIntNumber(min, max) {
+const randomIntNumber = (min, max) => {
   min = Math.ceil(min);
   max = Math.floor(max);
 
-  if ((max < min) || (max === min)) {
-    const messageAlert = 'Введите максимальное число диапазона больше минимального';
-    return messageAlert;
+  if (max === min) {
+    return -1;
+  } else if (max < min) {
+    [min, max] = [max, min];
   }
 
   return Math.floor(Math.random() * (max - min + 1)) + min; //источник - MDN
 }
 
-getRandomIntNumber(2,20);
-
-function getMaxLengthComment(commentString, commentMaxLength) {
-  const result = commentString.length <= commentMaxLength;
-  return result;
+const commentLengthCheck = (commentString, commentMaxLength) => {
+  return commentString.length <= commentMaxLength;
 }
-
-getMaxLengthComment('Учтите, что диапазон может быть только положительный, включая ноль.',140);

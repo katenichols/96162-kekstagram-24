@@ -89,3 +89,4 @@ const createDescPictureItem = () => {
 const descPicture = Array.from({length: 25}, createDescPictureItem);
 
 descPicture;
+

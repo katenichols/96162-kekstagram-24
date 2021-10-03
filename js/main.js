@@ -88,4 +88,4 @@ const createDescPictureItem = () => {
 
 const descPicture = Array.from({length: 25}, createDescPictureItem);
 
-console.log(descPicture);
+descPicture;

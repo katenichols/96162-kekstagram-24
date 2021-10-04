@@ -49,44 +49,43 @@ const getRandomArrayElement = (elements) => elements[getRandomIntNumber(0, eleme
 
 // Функция составления объекта комментария
 let randomComments = 0;
-let idCommentsNumber = 0;
+let idCommentsNumber = 1;
 
 const createCommentsItem = () => {
   let messageText = '';
 
   if (getRandomIntNumber(1, 2) === 2) {
-    messageText = `${getRandomArrayElement(COMMENT_PHRASES)} ${  getRandomArrayElement(COMMENT_PHRASES)}`;
+    messageText = `${getRandomArrayElement(COMMENT_PHRASES)} ${getRandomArrayElement(COMMENT_PHRASES)}`;
   } else {
     messageText = getRandomArrayElement(COMMENT_PHRASES);
   }
 
-  idCommentsNumber++;
-
   return {
-    id: idCommentsNumber,
+    id: idCommentsNumber++,
     avatar: `img/avatar${String(getRandomIntNumber(1, 6))}.svg`,
     message: messageText,
     name: getRandomArrayElement(AUTHORS_COMMENTS),
   };
 };
 
+const commentsArray = (commentsNumber) => new Array(commentsNumber).fill(null).map(() => createCommentsItem());
+
 // Функция создания общего массива
-let idDescNumber = 0;
+let idDescNumber = 1;
+const PICTURES_COUNT = 25;
 
 const createDescPictureItem = () => {
-  idDescNumber++;
   randomComments = getRandomIntNumber(1, 4);
-  idCommentsNumber = 0;
+  idCommentsNumber = 1;
   return {
-    id: idDescNumber,
+    id: idDescNumber++,
     url: `photos/${String(idDescNumber)}.jpg`,
     description: `Happy life! Часть ${String(idDescNumber)}`,
     likes: getRandomIntNumber(15, 200),
-    comments: Array.from({length: randomComments}, createCommentsItem),
+    comments: commentsArray(randomComments),
   };
 };
 
-const descPicture = Array.from({length: 25}, createDescPictureItem);
+const descPicture = new Array(PICTURES_COUNT).fill(null).map(() => createDescPictureItem());
 
 descPicture;
-

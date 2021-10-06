@@ -34,11 +34,9 @@ const COMMENT_PHRASES = [
 ];
 
 // Функция составления объекта комментария
-let idCommentsNumber = 1;
 
-const createCommentsItem = () => {
+const createCommentsItem = (count) => {
   let messageText = '';
-  let count = idCommentsNumber;
 
   if (getRandomIntNumber(1, 2) === 2) {
     messageText = `${getRandomArrayElement(COMMENT_PHRASES)} ${getRandomArrayElement(COMMENT_PHRASES)}`;
@@ -47,13 +45,21 @@ const createCommentsItem = () => {
   }
 
   return {
-    id: count++,
+    id: count,
     avatar: `img/avatar${String(getRandomIntNumber(1, 6))}.svg`,
     message: messageText,
     name: getRandomArrayElement(AUTHORS_COMMENTS),
   };
 };
 
-const commentsArray = (commentsNumber) => new Array(commentsNumber).fill(null).map(() => createCommentsItem());
+const commentsArray = () => {
+  const newArray = [];
+  const randomComments = getRandomIntNumber(1, 4);
+
+  for (let i = 1; i <= randomComments; i++) {
+    newArray.push(createCommentsItem(i));
+  }
+  return newArray;
+};
 
 export {commentsArray};

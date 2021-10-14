@@ -1,10 +1,11 @@
 import {getRandomIntNumber} from './util.js';
 import {commentsArray} from './create-arrays.js';
 
-// Функция создания общего массива
-const PICTURES_COUNT = 25;
+
+// const PICTURES_COUNT = 25;
 let idDescNumber = 1;
 
+// Функция создания описания картинки
 const createDescPictureItem = () => ({
   id: idDescNumber++,
   url: `photos/${String(idDescNumber-1)}.jpg`,
@@ -13,6 +14,7 @@ const createDescPictureItem = () => ({
   comments: commentsArray(),
 });
 
-const descPicture = new Array(PICTURES_COUNT).fill(null).map(() => createDescPictureItem());
+// const descPicture = new Array(PICTURES_COUNT).fill(null).map(() => createDescPictureItem());
+// const descPicture = new Array().fill(null);
 
-export {descPicture};
+export {createDescPictureItem};

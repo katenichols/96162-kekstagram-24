@@ -2,7 +2,7 @@ import {getRandomIntNumber} from './util.js';
 import {commentsArray} from './create-arrays.js';
 
 
-// const PICTURES_COUNT = 25;
+const PICTURES_COUNT = 25;
 let idDescNumber = 1;
 
 // Функция создания описания картинки
@@ -14,7 +14,6 @@ const createDescPictureItem = () => ({
   comments: commentsArray(),
 });
 
-// const descPicture = new Array(PICTURES_COUNT).fill(null).map(() => createDescPictureItem());
-// const descPicture = new Array().fill(null);
+const descPicture = new Array(PICTURES_COUNT).fill(null).map(() => createDescPictureItem());
 
-export {createDescPictureItem};
+export {descPicture};

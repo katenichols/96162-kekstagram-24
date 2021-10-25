@@ -5,9 +5,36 @@ const uploadFile = uploadForm.querySelector('#upload-file');
 const uploadCancel = uploadForm.querySelector('.img-upload__cancel');
 const textHashtags = uploadForm.querySelector('.text__hashtags');
 const textDescription = uploadForm.querySelector('.text__description');
-const uploadEffects = uploadForm.querySelector('.img-upload__effects');
-const effectNone = uploadForm.querySelector('#effect-none');
+const effectList = uploadForm.querySelector('.effects__list');
 const effectLevel = uploadForm.querySelector('.img-upload__effect-level');
+const imgPreview = uploadForm.querySelector('.img-upload__preview > img');
+
+const effects = {
+  none: () => {
+    imgPreview.style.filter = '';
+    effectLevel.classList.add('hidden');
+  },
+  chrome: () => {
+    imgPreview.style.filter = 'grayscale(1)';
+    effectLevel.classList.remove('hidden');
+  },
+  sepia: () => {
+    imgPreview.style.filter = 'sepia(1)';
+    effectLevel.classList.remove('hidden');
+  },
+  marvin: () => {
+    imgPreview.style.filter = 'invert(100%)';
+    effectLevel.classList.remove('hidden');
+  },
+  phobos: () => {
+    imgPreview.style.filter = 'blur(3px)';
+    effectLevel.classList.remove('hidden');
+  },
+  heat: () => {
+    imgPreview.style.filter = 'brightness(3)';
+    effectLevel.classList.remove('hidden');
+  },
+};
 
 const openModal = () => {
   body.classList.add('modal-open');
@@ -16,41 +43,36 @@ const openModal = () => {
 
 uploadFile.addEventListener('change', () => openModal());
 
+uploadCancel.addEventListener('click', () => closeModal());
+
+const onEscKeydown = (evt) => {
+  if ((evt.key === 'Escape' ||
+    evt.key === 'Esc') &&
+    !evt.target.classList.contains('text__hashtags') &&
+    !evt.target.classList.contains('text__description')) {
+    closeModal();
+  }
+};
+
 const closeModal = () => {
   body.classList.remove('modal-open');
   uploadOverlay.classList.add('hidden');
   uploadFile.value = '';
+
+  document.removeEventListener('keydown', onEscKeydown);
 };
 
-uploadCancel.addEventListener('click', () => closeModal());
+document.addEventListener('keydown', onEscKeydown);
 
-uploadForm.addEventListener('keydown', (evt) => {
-  if (evt.key === 'Escape') {
-    if (textHashtags === document.activeElement) {
-      textHashtags.value = '';
-      textHashtags.blur();
-      textDescription.focus();
-    } else if (textDescription === document.activeElement) {
-      textDescription.value = '';
-      textDescription.blur();
-    }
-    else {
-      closeModal();
-    }
+effectList.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  let target = evt.target;
+  if (!target.classList.contains('effects__preview')) {
+    target = evt.target.firstElementChild;
+  }
+  if (target.classList.contains('effects__preview')) {
+    effects[target.classList[1].replace('effects__preview--', '')]();
   }
 });
-
-uploadEffects.addEventListener('click', (evt) => {
-  console.log(evt.target);
-  if (evt.target.classList.contains('effect__preview')) {
-    evt.target.checked = 'true';
-  }
-});
-
-if (effectNone.checked) {
-  effectLevel.classList.add('hidden');
-} else {
-  effectLevel.classList.remove('hidden');
-}
 
 export {textHashtags, textDescription};

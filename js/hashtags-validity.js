@@ -54,11 +54,13 @@ textHashtags.addEventListener('input', () => {
   }
 
   if (invalidHashtagMessage.length > 0) {
+    console.log(textHashtags.value.length);
     textHashtags.setCustomValidity(invalidHashtagMessage.join('. \n'));
     textHashtags.style.outline = '3px solid red';
     textHashtags.style.outlineOffset = '-2px';
   } else {
     textHashtags.style.outline = 'none';
+    textHashtags.style.outlineOffset = '0';
   }
 
   textHashtags.reportValidity();

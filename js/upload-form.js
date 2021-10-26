@@ -1,3 +1,6 @@
+import {closeModal} from './close-modal.js';
+import {onEscKeydown} from "./esc-keydown.js";
+
 const body = document.querySelector('body');
 const uploadForm = body.querySelector('.img-upload__form');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
@@ -43,29 +46,20 @@ const openModal = () => {
 
 uploadFile.addEventListener('change', () => openModal());
 
+// document.addEventListener('keydown', onEscKeydown);
+
+// const closeModal = () => {
+//   body.classList.remove('modal-open');
+//   uploadOverlay.classList.add('hidden');
+//   uploadFile.value = '';
+//   document.removeEventListener('keydown', onEscKeydown);
+// };
+
 uploadCancel.addEventListener('click', () => closeModal());
-
-const onEscKeydown = (evt) => {
-  if ((evt.key === 'Escape' ||
-    evt.key === 'Esc') &&
-    !evt.target.classList.contains('text__hashtags') &&
-    !evt.target.classList.contains('text__description')) {
-    closeModal();
-  }
-};
-
-function closeModal() {
-  body.classList.remove('modal-open');
-  uploadOverlay.classList.add('hidden');
-  uploadFile.value = '';
-
-  document.removeEventListener('keydown', onEscKeydown);
-}
-
-document.addEventListener('keydown', onEscKeydown);
 
 effectList.addEventListener('click', (evt) => {
   evt.preventDefault();
+  document.addEventListener('keydown', onEscKeydown);
   let target = evt.target;
   if (!target.classList.contains('effects__preview')) {
     target = evt.target.firstElementChild;
@@ -75,4 +69,4 @@ effectList.addEventListener('click', (evt) => {
   }
 });
 
-export {textHashtags, textDescription};
+export {textHashtags, textDescription, body, uploadFile, uploadOverlay};

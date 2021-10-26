@@ -14,3 +14,5 @@ const addToFragment = () => {
 };
 
 pictures.appendChild(addToFragment());
+
+export {pictures};

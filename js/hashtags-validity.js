@@ -3,13 +3,22 @@ import {textHashtags} from "./upload-form.js";
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
 
+// Функция валидации поля для хештегов
+
 textHashtags.addEventListener('input', () => {
   textHashtags.setCustomValidity('');
-  const invalidHashtagMessage = [];
+  let invalidHashtagMessage = [];
 
   const inputText = textHashtags.value.toLowerCase().trim();
 
+  // Функция отмены красной рамки
+  const outlineIfNotError = () => {
+    textHashtags.style.outline = 'none';
+    textHashtags.style.outlineOffset = '0';
+  }
+
   if (!inputText) {
+    outlineIfNotError();
     return;
   }
 
@@ -22,45 +31,43 @@ textHashtags.addEventListener('input', () => {
   const isFirtNotHashtag = inputArray.some((item) => item[0] !== '#');
 
   if (isFirtNotHashtag) {
-    invalidHashtagMessage.push('Хештэг должен начинаться с решётки');
+    invalidHashtagMessage.push('Хештег должен начинаться с решётки');
   }
 
   const isOnlyHashtag = inputArray.some((item) => item === '#');
 
   if (isOnlyHashtag) {
-    invalidHashtagMessage.push('Хештэг не может состоять только из решётки');
+    invalidHashtagMessage.push('Хештег не может состоять только из решётки');
   }
 
   const isSplitSpaceHashtag = inputArray.some((item) => item.indexOf('#', 1) >= 1);
 
   if (isSplitSpaceHashtag) {
-    invalidHashtagMessage.push('Хештэги должны разделяться пробелами');
+    invalidHashtagMessage.push('Хештеги должны разделяться пробелами');
   }
 
   const isRepeatHashtag = inputArray.some((item, i, arr) => arr.indexOf(item, i + 1) >= i + 1);
 
   if (isRepeatHashtag) {
-    invalidHashtagMessage.push('Не должно быть повторяющихся хештэгов');
+    invalidHashtagMessage.push('Не должно быть повторяющихся хештегов');
   }
 
   const isLongHashtag = inputArray.some((item) => item.length > MAX_LENGTH_HASHTAG);
 
   if (isLongHashtag) {
-    invalidHashtagMessage.push('Максимальная длина одного хештэга вместе с решёткой 20 символов');
+    invalidHashtagMessage.push('Максимальная длина одного хештега вместе с решёткой 20 символов');
   }
 
   if (inputArray.length > MAX_COUNT_HASHTAG) {
-    invalidHashtagMessage.push('Может быть не более 5 хештэгов');
+    invalidHashtagMessage.push('Может быть не более 5 хештегов');
   }
 
   if (invalidHashtagMessage.length > 0) {
-    console.log(textHashtags.value.length);
     textHashtags.setCustomValidity(invalidHashtagMessage.join('. \n'));
     textHashtags.style.outline = '3px solid red';
     textHashtags.style.outlineOffset = '-2px';
   } else {
-    textHashtags.style.outline = 'none';
-    textHashtags.style.outlineOffset = '0';
+    outlineIfNotError();
   }
 
   textHashtags.reportValidity();

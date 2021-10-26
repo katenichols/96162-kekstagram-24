@@ -54,13 +54,13 @@ const onEscKeydown = (evt) => {
   }
 };
 
-const closeModal = () => {
+function closeModal() {
   body.classList.remove('modal-open');
   uploadOverlay.classList.add('hidden');
   uploadFile.value = '';
 
   document.removeEventListener('keydown', onEscKeydown);
-};
+}
 
 document.addEventListener('keydown', onEscKeydown);
 

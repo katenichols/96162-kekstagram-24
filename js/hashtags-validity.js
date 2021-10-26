@@ -1,4 +1,4 @@
-import {textHashtags} from "./upload-form.js";
+import {textHashtags} from './upload-form.js';
 
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
@@ -7,7 +7,7 @@ const MAX_COUNT_HASHTAG = 5;
 
 textHashtags.addEventListener('input', () => {
   textHashtags.setCustomValidity('');
-  let invalidHashtagMessage = [];
+  const invalidHashtagMessage = [];
 
   const inputText = textHashtags.value.toLowerCase().trim();
 
@@ -15,7 +15,7 @@ textHashtags.addEventListener('input', () => {
   const outlineIfNotError = () => {
     textHashtags.style.outline = 'none';
     textHashtags.style.outlineOffset = '0';
-  }
+  };
 
   if (!inputText) {
     outlineIfNotError();

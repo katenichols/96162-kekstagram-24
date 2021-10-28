@@ -46,15 +46,6 @@ const openModal = () => {
 
 uploadFile.addEventListener('change', () => openModal());
 
-// document.addEventListener('keydown', onEscKeydown);
-
-// const closeModal = () => {
-//   body.classList.remove('modal-open');
-//   uploadOverlay.classList.add('hidden');
-//   uploadFile.value = '';
-//   document.removeEventListener('keydown', onEscKeydown);
-// };
-
 uploadCancel.addEventListener('click', () => closeModal());
 
 effectList.addEventListener('click', (evt) => {

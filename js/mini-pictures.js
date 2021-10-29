@@ -2,7 +2,7 @@ import {descPicture} from './create-main-array.js';
 import {onEscKeydown} from './esc-keydown.js';
 import {drowBigPicture} from './big-picture.js';
 
-const pictureTemplate = document.querySelector('#picture') // найден шаблон одной картинки
+const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 

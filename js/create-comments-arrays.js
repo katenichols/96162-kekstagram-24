@@ -46,7 +46,7 @@ const createCommentsItem = (count) => {
 
   return {
     id: count,
-    avatar: `img/avatar${String(getRandomIntNumber(1, 6))}.svg`,
+    avatar: `img/avatar-${String(getRandomIntNumber(1, 6))}.svg`,
     message: messageText,
     name: getRandomArrayElement(AUTHORS_COMMENTS),
   };

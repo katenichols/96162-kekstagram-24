@@ -1,5 +1,5 @@
 import {getRandomIntNumber} from './util.js';
-import {commentsArray} from './create-arrays.js';
+import {commentsArray} from './create-comments-arrays.js';
 
 
 const PICTURES_COUNT = 25;

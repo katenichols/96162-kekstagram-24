@@ -1,5 +1,5 @@
 import {closeModal} from './close-modal.js';
-import {onEscKeydown} from "./esc-keydown.js";
+import {onEscKeydown} from './esc-keydown.js';
 
 const body = document.querySelector('body');
 const uploadForm = body.querySelector('.img-upload__form');

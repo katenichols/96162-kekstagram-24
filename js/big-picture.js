@@ -31,19 +31,25 @@ const copyElement = (commentsArray) => {
   }
 };
 
+// Функция отображения количества комментариев
+const commentsCountLabel = (comments) => {
+  commentsCount.textContent = comments.textContent;
+  console.log(comments.textContent);
+  if (commentsCount.textContent < 5) {
+    socialCommentsCount.textContent = `${commentsCount.textContent} из ${commentsCount.textContent} комментариев`;
+  }
+  if ()
+};
+
 const drowBigPicture = (src, likes, comments, description, commentsArray) => {
   bigPicture.classList.remove('hidden');
   body.classList.remove('modal-open');
   bigPictureImg.src = src;
   likesCount.textContent = likes.textContent;
-  commentsCount.textContent = comments.textContent;
   socialCaption.textContent = description;
 
+  commentsCountLabel(comments);
   copyElement(commentsArray);
-
-
-  socialCommentsCount.classList.add('hidden');
-  commentsLoader.classList.add('hidden');
 };
 
 export {bigPicture, drowBigPicture};

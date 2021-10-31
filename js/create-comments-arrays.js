@@ -54,7 +54,7 @@ const createCommentsItem = (count) => {
 
 const commentsArray = () => {
   const newArray = [];
-  const randomComments = getRandomIntNumber(1, 4);
+  const randomComments = getRandomIntNumber(1, 14);
 
   for (let i = 1; i <= randomComments; i++) {
     newArray.push(createCommentsItem(i));

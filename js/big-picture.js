@@ -13,8 +13,11 @@ const socialCommentsItem = bigPictureSocial.querySelector('.social__comment');
 const socialCommentsCount = bigPictureSocial.querySelector('.social__comment-count');
 const commentsLoader = bigPictureSocial.querySelector('.comments-loader');
 const socialCaption = bigPictureSocial.querySelector('.social__caption');
+let showArray = [];
+const numberOfShowSecondIteration = 2;
 let numberOfShow = 1;
 let shownComments = 0;
+
 
 bigPictureCancel.addEventListener('click', () => closeModal());
 
@@ -58,20 +61,22 @@ const commentsCountLabel = (shownCommentsNumbers, totalLength) => {
 // Функция показа комментариев по 5
 const showComments = (commentsArray) => {
   const length = commentsArray.length;
-
   const hideArray = Array.from(socialComments.querySelectorAll('.social__comment'));
-  const showArray = [];
+  showArray = [];
 
+  // прячем лоадер, если комментов меньше лимита
   if (hideArray.length <= LIMIT_OF_SHOW_COMMENTS) {
     commentsLoader.classList.add('hidden');
   } else {
     commentsLoader.classList.remove('hidden');
   }
 
+  // прячем все комментарии
   for (let i = 0; i < length; i++) {
     hideArray[i].classList.add('hidden');
   }
 
+  // добавляем комментарии в массив для показа
   if (hideArray.length < LIMIT_OF_SHOW_COMMENTS) {
     for (let y = 0; y < hideArray.length; y++) {
       showArray.push(hideArray[y]);
@@ -84,34 +89,48 @@ const showComments = (commentsArray) => {
     }
   }
 
+  // обрабатываем клик по лоадеру
   commentsLoader.addEventListener('click', () => {
     numberOfShow++;
+    // удаляем из массива комментов уже показанные комменты
     hideArray.splice(0, LIMIT_OF_SHOW_COMMENTS);
+    // изменяем число показанных комментов
+    const length = commentsArray.length;
     shownComments = LIMIT_OF_SHOW_COMMENTS * numberOfShow;
 
+    // выравниваем число показанных комментов по их общему количеству
     if (shownComments > length) {
       shownComments = length;
     }
 
-    commentsCountLabel(shownComments, length);
-
+    // в массиве к показу скрываем уже показанные комменты, а затем удаляем их
     for (let k = 0; k < LIMIT_OF_SHOW_COMMENTS; k++) {
       showArray[k].classList.add('hidden');
     }
-
     showArray.splice(0, LIMIT_OF_SHOW_COMMENTS);
 
-    for (let l = 0; l < LIMIT_OF_SHOW_COMMENTS; l++) {
-      showArray.push(hideArray[l]);
-      if (showArray.length > 0 && showArray[l].classList.contains('hidden')) {
-        showArray[l].classList.remove('hidden');
-      }
+    // добавляем в массив к показу новую порцию комментов
+    if (hideArray.length <= LIMIT_OF_SHOW_COMMENTS) {
+      commentsLoader.classList.add('hidden');
+      numberOfShow = numberOfShowSecondIteration;
 
-      if (hideArray.length < LIMIT_OF_SHOW_COMMENTS) {
-        commentsLoader.classList.add('hidden');
-        numberOfShow = 2;
+      for (let l = 0; l < hideArray.length; l++) {
+        showArray.push(hideArray[l]);
+        // if (showArray.length > 0 && showArray[l].classList.contains('hidden')) {
+          showArray[l].classList.remove('hidden');
+        // }
+      }
+    } else {
+      for (let l = 0; l < LIMIT_OF_SHOW_COMMENTS; l++) {
+        showArray.push(hideArray[l]);
+        // if (showArray.length > 0 && showArray[l].classList.contains('hidden')) {
+          showArray[l].classList.remove('hidden');
+        // }
       }
     }
+
+    // вызываем функцию показа информации о комментах
+    commentsCountLabel(shownComments, length);
   });
 };
 
@@ -123,7 +142,6 @@ const drowBigPicture = (src, likes, comments, description, commentsArray) => {
   socialCaption.textContent = description;
   shownComments = LIMIT_OF_SHOW_COMMENTS;
 
-  // eslint-disable-next-line radix
   commentsCountLabel(shownComments, Number.parseInt(comments.textContent));
   copyElement(commentsArray);
   showComments(commentsArray);

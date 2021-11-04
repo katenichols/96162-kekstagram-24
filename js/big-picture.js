@@ -14,10 +14,7 @@ const socialCommentsCount = bigPictureSocial.querySelector('.social__comment-cou
 const commentsLoader = bigPictureSocial.querySelector('.comments-loader');
 const socialCaption = bigPictureSocial.querySelector('.social__caption');
 let showArray = [];
-let commentsToShow = 0;
-let count = LIMIT_OF_SHOW_COMMENTS;
 let shownComments = 0;
-
 
 bigPictureCancel.addEventListener('click', () => closeModal());
 
@@ -58,61 +55,46 @@ const commentsCountLabel = (shownCommentsNumbers, totalLength) => {
   }
 };
 
-// const showNextComments = (lastLength, showArray) => {
-//   console.log('Оставшихся комментов - ', lastLength, showArray.length);
-//   if (LIMIT_OF_SHOW_COMMENTS >= lastLength) {
-//     for (let y = LIMIT_OF_SHOW_COMMENTS; y < lastLength; y++) {
-//       shownComments = showArray.length;
-//       showArray[y].classList.remove('hidden');
-//       commentsLoader.classList.add('hidden');
-//       commentsLoader.removeEventListener('click', showNextComments(commentsToShow, showArray));
-//       return;
-//     }
-//   }
+const showHiddenElements = (index, count) => {
+  for (let y = index; y < count; y++) {
+    showArray[y].classList.remove('hidden');
+  }
+};
 
-//   // вызываем функцию показа информации о комментах
-//   commentsCountLabel(shownComments, length);
-// };
+const showNextComments = (evt) => {
+  evt.preventDefault();
+  if ((showArray.length - shownComments) <= LIMIT_OF_SHOW_COMMENTS) {
+    showHiddenElements(showArray.length - shownComments, showArray.length);
+    commentsLoader.classList.add('hidden');
+    commentsLoader.removeEventListener('click', showNextComments);
+    shownComments = showArray.length;
+  } else {
+    commentsLoader.classList.remove('hidden');
+    shownComments += LIMIT_OF_SHOW_COMMENTS;
+    showHiddenElements(shownComments - LIMIT_OF_SHOW_COMMENTS, shownComments);
+  }
+  commentsCountLabel(shownComments, showArray.length);
+};
 
 // Функция показа комментариев по 5
-const showComments = (commentsArray) => {
-  commentsToShow = 0;
+const showComments = () => {
   showArray = Array.from(socialComments.querySelectorAll('.social__comment'));
   commentsLoader.classList.remove('hidden');
-  console.log(showArray.length);
+  shownComments = 0;
 
   // прячем лоадер, если комментов меньше лимита
   if (showArray.length <= LIMIT_OF_SHOW_COMMENTS) {
     commentsLoader.classList.add('hidden');
-    commentsCountLabel(commentsArray.length, commentsArray.length);
-    return;
+    commentsCountLabel(showArray.length, showArray.length);
   } else {
     commentsLoader.classList.remove('hidden');
     for (let i = LIMIT_OF_SHOW_COMMENTS; i < showArray.length; i++) {
       showArray[i].classList.add('hidden');
-      commentsToShow++;
     }
-    console.log(commentsToShow);
+    shownComments += LIMIT_OF_SHOW_COMMENTS;
+    commentsCountLabel(shownComments, showArray.length);
+    commentsLoader.addEventListener('click', showNextComments);
   }
-
-  // обрабатываем клик по лоадеру
-  // commentsLoader.addEventListener('click', showNextComments(commentsToShow, showArray));
-  commentsLoader.addEventListener('click', (evt) => {
-    evt.preventDefault();
-    console.log('Оставшихся комментов - ', commentsToShow, showArray.length);
-  if (LIMIT_OF_SHOW_COMMENTS >= commentsToShow) {
-    shownComments = showArray.length;
-    for (let y = LIMIT_OF_SHOW_COMMENTS; y < commentsToShow; y++) {
-      showArray[y].classList.remove('hidden');
-      // commentsLoader.classList.add('hidden');
-      // commentsLoader.removeEventListener('click', showNextComments(commentsToShow, showArray));
-      // return;
-    }
-  }
-
-  // вызываем функцию показа информации о комментах
-  commentsCountLabel(shownComments, showArray.length);
-  });
 };
 
 const drowBigPicture = (src, likes, comments, description, commentsArray) => {
@@ -121,12 +103,11 @@ const drowBigPicture = (src, likes, comments, description, commentsArray) => {
   bigPictureImg.src = src;
   likesCount.textContent = likes.textContent;
   socialCaption.textContent = description;
-  shownComments = LIMIT_OF_SHOW_COMMENTS;
 
   // commentsCountLabel(shownComments, Number.parseInt(comments.textConten, 10));
-  commentsCountLabel(shownComments, commentsArray.length);
+
   copyElement(commentsArray);
-  showComments(commentsArray);
+  showComments();
 };
 
 export {bigPicture, drowBigPicture};

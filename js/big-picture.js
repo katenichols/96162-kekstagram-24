@@ -55,13 +55,14 @@ const commentsCountLabel = (shownCommentsNumbers, totalLength) => {
   }
 };
 
-// Функия показа скрытых комментов в заданном количестве
+// Функия показа скрытых элементов
 const showHiddenElements = (index, count) => {
   for (let y = index; y < count; y++) {
     showArray[y].classList.remove('hidden');
   }
 };
 
+// Функция показа следующей части комментов
 const showNextComments = (evt) => {
   evt.preventDefault();
   if ((showArray.length - shownComments) <= LIMIT_OF_SHOW_COMMENTS) {

@@ -55,6 +55,7 @@ const commentsCountLabel = (shownCommentsNumbers, totalLength) => {
   }
 };
 
+// Функия показа скрытых комментов в заданном количестве
 const showHiddenElements = (index, count) => {
   for (let y = index; y < count; y++) {
     showArray[y].classList.remove('hidden');

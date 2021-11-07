@@ -18,7 +18,7 @@ let shownComments = 0;
 
 bigPictureCancel.addEventListener('click', () => closeModal());
 
-// функция копирования узла. Источник - https://stackoverflow.com/
+// Функция копирования узла. Источник - https://stackoverflow.com/
 const copyElement = (commentsArray) => {
   while (socialComments.firstChild) {
     socialComments.removeChild(socialComments.firstChild);
@@ -84,7 +84,7 @@ const showComments = () => {
   commentsLoader.classList.remove('hidden');
   shownComments = 0;
 
-  // прячем лоадер, если комментов меньше лимита
+  // Прячем лоадер, если комментов меньше лимита
   if (showArray.length <= LIMIT_OF_SHOW_COMMENTS) {
     commentsLoader.classList.add('hidden');
     commentsCountLabel(showArray.length, showArray.length);
@@ -105,8 +105,6 @@ const drowBigPicture = (src, likes, comments, description, commentsArray) => {
   bigPictureImg.src = src;
   likesCount.textContent = likes.textContent;
   socialCaption.textContent = description;
-
-  // commentsCountLabel(shownComments, Number.parseInt(comments.textConten, 10));
 
   copyElement(commentsArray);
   showComments();

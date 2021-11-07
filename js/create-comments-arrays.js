@@ -34,7 +34,6 @@ const COMMENT_PHRASES = [
 ];
 
 // Функция составления объекта комментария
-
 const createCommentsItem = (count) => {
   let messageText = '';
 

@@ -81,10 +81,10 @@ uploadCancel.addEventListener('click', () => closeModal());
 controlSmaller.addEventListener('click', () => {
   currentValue -= VALUE_STEP;
   if (currentValue > MIN_VALUE) {
-    imgUploadPreview.style.transform = `scale(0.${currentValue})`;
+    imgPreview.style.transform = `scale(0.${currentValue})`;
   } else {
     currentValue = MIN_VALUE;
-    imgUploadPreview.style.transform = `scale(0.${MIN_VALUE})`;
+    imgPreview.style.transform = `scale(0.${MIN_VALUE})`;
   }
   controlValue.value = `${currentValue}%`;
 });
@@ -92,10 +92,10 @@ controlSmaller.addEventListener('click', () => {
 controlBigger.addEventListener('click', () => {
   currentValue += VALUE_STEP;
   if (currentValue < MAX_VALUE) {
-    imgUploadPreview.style.transform = `scale(0.${currentValue})`;
+    imgPreview.style.transform = `scale(0.${currentValue})`;
   } else {
     currentValue = MAX_VALUE;
-    imgUploadPreview.style.transform = 'scale(1)';
+    imgPreview.style.transform = 'scale(1)';
   }
   controlValue.value = `${currentValue}%`;
 });

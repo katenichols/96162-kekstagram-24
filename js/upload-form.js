@@ -18,34 +18,82 @@ const scale = document.querySelector('.scale');
 const controlSmaller = scale.querySelector('.scale__control--smaller');
 const controlBigger = scale.querySelector('.scale__control--bigger');
 const controlValue = scale.querySelector('.scale__control--value');
-const imgUploadPreview = document.querySelector('.img-upload__preview');
+const effectLevelSlider = uploadForm.querySelector('.effect-level__slider');
+const effectLevelValue = uploadForm.querySelector('.effect-level__value');
+const effectLevelValueMax = 100;
+
+noUiSlider.create(effectLevelSlider, {
+  range: {
+    min: 0,
+    max: 100,
+  },
+  start: 100,
+  step: 0.1,
+  connect: 'lower',
+  format: {
+    to: (value) => {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: (value) => {return parseFloat(value)},
+  },
+});
 
 let currentValue = 100;
 
+// const effects = {
+//   none: () => {
+//     effectLevel.classList.add('hidden');
+//     imgPreview.style.filter = '';
+//   },
+//   chrome: () => {
+//     effectLevel.classList.remove('hidden');
+//     imgPreview.style.filter = 'grayscale(1)';
+//   },
+//   sepia: () => {
+//     effectLevel.classList.remove('hidden');
+//     imgPreview.style.filter = 'sepia(1)';
+//   },
+//   marvin: () => {
+//     effectLevel.classList.remove('hidden');
+//     imgPreview.style.filter = 'invert(100%)';
+//   },
+//   phobos: () => {
+//     effectLevel.classList.remove('hidden');
+//     imgPreview.style.filter = 'blur(3px)';
+//   },
+//   heat: () => {
+//     effectLevel.classList.remove('hidden');
+//     imgPreview.style.filter = 'brightness(3)';
+//   },
+// };
+
 const effects = {
   none: () => {
-    imgPreview.style.filter = '';
     effectLevel.classList.add('hidden');
+    return 'none';
   },
   chrome: () => {
-    imgPreview.style.filter = 'grayscale(1)';
     effectLevel.classList.remove('hidden');
+    return `grayscale(${parseInt(effectLevelValue.value, 10) * 0.01})`;
   },
   sepia: () => {
-    imgPreview.style.filter = 'sepia(1)';
     effectLevel.classList.remove('hidden');
+    return `sepia(${parseInt(effectLevelValue.value, 10) * 0.01})`;
   },
   marvin: () => {
-    imgPreview.style.filter = 'invert(100%)';
     effectLevel.classList.remove('hidden');
+    return `invert(${Math.floor(effectLevelValue.value)}%`;
   },
   phobos: () => {
-    imgPreview.style.filter = 'blur(3px)';
     effectLevel.classList.remove('hidden');
+    return `blur(${(parseInt(effectLevelValue.value, 10) * 3) * 0.01})`;
   },
   heat: () => {
-    imgPreview.style.filter = 'brightness(3)';
     effectLevel.classList.remove('hidden');
+    return `brightness(${(parseInt(effectLevelValue.value, 10) * 3) * 0.01})`;
   },
 };
 
@@ -67,8 +115,10 @@ const openModal = () => {
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');
   currentValue = 100;
-  imgUploadPreview.style.transform = 'scale(1)';
+  imgPreview.style.transform = 'scale(1)';
   effectList.addEventListener('click', applyFilter);
+  effectLevelValue.value = effectLevelValueMax;
+  effectLevelSlider.noUiSlider.set(effectLevelValueMax);
 };
 
 uploadFile.addEventListener('change', () => openModal());
@@ -100,5 +150,10 @@ controlBigger.addEventListener('click', () => {
   controlValue.value = `${currentValue}%`;
 });
 
+effectLevelSlider.noUiSlider.on('update', (_, handle, unencoded) => {
+  effectLevelValue.value = unencoded[handle];
+  console.log(effectLevelValue.value);
+});
+
 export {textHashtags, textDescription, body, uploadFile, uploadOverlay, openModal,
-  uploadCancel, applyFilter, effectList, imgPreview};
+  uploadCancel, applyFilter, effectList, imgPreview, effectLevelSlider};

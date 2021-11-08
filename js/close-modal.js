@@ -1,5 +1,5 @@
 import {body, uploadOverlay, uploadFile, openModal, uploadCancel, applyFilter, effectList,
-  imgPreview} from './upload-form.js';
+  imgPreview, effectLevelSlider} from './upload-form.js';
 import {onEscKeydown} from './esc-keydown.js';
 import {bigPicture} from './big-picture.js';
 
@@ -9,6 +9,7 @@ const closeModal = () => {
   uploadFile.value = '';
   bigPicture.classList.add('hidden');
   imgPreview.style.filter = '';
+  effectLevelSlider.noUiSlider.destroy();
 
   effectList.removeEventListener('click', applyFilter);
   uploadFile.removeEventListener('change', () => openModal());

@@ -4,6 +4,8 @@ import {closeModal} from './close-modal.js';
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
 const MAX_VALUE = 100;
+const EFFECT_LEVEL_VALUE_MAX = 100;
+
 const body = document.querySelector('body');
 const uploadForm = body.querySelector('.img-upload__form');
 const uploadOverlay = uploadForm.querySelector('.img-upload__overlay');
@@ -20,7 +22,7 @@ const controlBigger = scale.querySelector('.scale__control--bigger');
 const controlValue = scale.querySelector('.scale__control--value');
 const effectLevelSlider = uploadForm.querySelector('.effect-level__slider');
 const effectLevelValue = uploadForm.querySelector('.effect-level__value');
-const effectLevelValueMax = 100;
+const imgUploadEffectsGroup = uploadForm.querySelector('.img-upload__effects');
 
 noUiSlider.create(effectLevelSlider, {
   range: {
@@ -37,7 +39,7 @@ noUiSlider.create(effectLevelSlider, {
       }
       return value.toFixed(1);
     },
-    from: (value) => {return parseFloat(value)},
+    from: (value) => parseFloat(value),
   },
 });
 
@@ -85,7 +87,7 @@ const effects = {
   },
   marvin: () => {
     effectLevel.classList.remove('hidden');
-    return `invert(${Math.floor(effectLevelValue.value)}%`;
+    return `invert(${Math.floor(effectLevelValue.value)}%)`;
   },
   phobos: () => {
     effectLevel.classList.remove('hidden');
@@ -98,7 +100,7 @@ const effects = {
 };
 
 // Обработка кликов по списку эффектов
-const applyFilter = (evt) => {
+const onUseFilter = (evt) => {
   evt.preventDefault();
   listenKeydown();
   let target = evt.target;
@@ -107,6 +109,7 @@ const applyFilter = (evt) => {
   }
   if (target.classList.contains('effects__preview')) {
     effects[target.classList[1].replace('effects__preview--', '')]();
+    console.log(effects[target.classList[1].replace('effects__preview--', '')]());
   }
 };
 
@@ -116,9 +119,9 @@ const openModal = () => {
   effectLevel.classList.add('hidden');
   currentValue = 100;
   imgPreview.style.transform = 'scale(1)';
-  effectList.addEventListener('click', applyFilter);
-  effectLevelValue.value = effectLevelValueMax;
-  effectLevelSlider.noUiSlider.set(effectLevelValueMax);
+
+  effectLevelValue.value = EFFECT_LEVEL_VALUE_MAX;
+  // effectLevelSlider.noUiSlider.set(EFFECT_LEVEL_VALUE_MAX);
 };
 
 uploadFile.addEventListener('change', () => openModal());
@@ -150,10 +153,32 @@ controlBigger.addEventListener('click', () => {
   controlValue.value = `${currentValue}%`;
 });
 
-effectLevelSlider.noUiSlider.on('update', (_, handle, unencoded) => {
-  effectLevelValue.value = unencoded[handle];
-  console.log(effectLevelValue.value);
+effectLevelSlider.noUiSlider.on('update', (values, handle) => {
+  effectLevelValue.value = values[handle];
+  console.log(values);
 });
 
+effectList.addEventListener('click', onUseFilter);
+
+
+// const onEffectRadioGroupClick = (evt) => {
+//   if (evt.target.classLict.contains('effects__preview')) { //effects__preview - это span с названием эффекта
+//     if (lastClass !== '') {
+//       imgPreview.classLict.remove(lastClass); // uploadPreviewImg - у меня это imgPreview
+//     }
+//     effectLevelSlider.noUiSlider.set(DEFAULT_EFFECT_LEVEL);
+//     let currentClass = evt.target.classLict[1];
+//     lastClass = currentClass;
+
+//     imgPreview.classLict.add(currentClass);
+//     imgPreview.style.filter = effects[currentClass.replace('effects__preview--', '')]();
+//   }
+// };
+
+// этот обработчик навешивается на клик по imgUploadEffectsGroup
+
+
+
+
 export {textHashtags, textDescription, body, uploadFile, uploadOverlay, openModal,
-  uploadCancel, applyFilter, effectList, imgPreview, effectLevelSlider};
+  uploadCancel, onUseFilter, effectList, imgPreview, effectLevelSlider};

@@ -1,4 +1,4 @@
-import {body, uploadOverlay, uploadFile, openModal, uploadCancel, onUseFilter, effectList,
+import {body, uploadOverlay, uploadFile, openModal, uploadCancel, imgUploadEffectsGroup, onImgUploadEffectsGroupClick,
   imgPreview, effectLevelSlider} from './upload-form.js';
 import {onEscKeydown} from './esc-keydown.js';
 import {bigPicture} from './big-picture.js';
@@ -10,9 +10,8 @@ const closeModal = () => {
   bigPicture.classList.add('hidden');
   imgPreview.style.filter = '';
   effectLevelSlider.noUiSlider.reset();
-  // effectLevelSlider.noUiSlider.destroy();
 
-  effectList.removeEventListener('click', onUseFilter);
+  imgUploadEffectsGroup.removeEventListener('click', onImgUploadEffectsGroupClick);
   uploadFile.removeEventListener('change', () => openModal());
   uploadCancel.removeEventListener('click', () => closeModal());
   document.removeEventListener('keydown', onEscKeydown);

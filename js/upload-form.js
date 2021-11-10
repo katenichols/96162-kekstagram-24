@@ -24,6 +24,38 @@ const effectLevelSlider = uploadForm.querySelector('.effect-level__slider');
 const effectLevelValue = uploadForm.querySelector('.effect-level__value');
 const imgUploadEffectsGroup = uploadForm.querySelector('.img-upload__effects');
 
+let effectValue = effectLevelValue.value;
+let currentValue = 100;
+
+// Применяемые фильтры
+const effects = {
+  none: () => {
+    effectLevel.classList.add('hidden');
+    return 'none';
+  },
+  chrome: () => {
+    effectLevel.classList.remove('hidden');
+    return `grayscale(${effectValue * 0.01})`;
+  },
+  sepia: () => {
+    effectLevel.classList.remove('hidden');
+    return `sepia(${effectValue * 0.01})`;
+  },
+  marvin: () => {
+    effectLevel.classList.remove('hidden');
+    return `invert(${Math.floor(effectValue)}%)`;
+  },
+  phobos: () => {
+    effectLevel.classList.remove('hidden');
+    return `blur(${(effectValue * 3) * 0.01}px)`;
+  },
+  heat: () => {
+    effectLevel.classList.remove('hidden');
+    return `brightness(${effectValue * 3 * 0.01})`;
+  },
+};
+
+// Определение слайдера
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 0,
@@ -43,73 +75,20 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
-let currentValue = 100;
 
-// const effects = {
-//   none: () => {
-//     effectLevel.classList.add('hidden');
-//     imgPreview.style.filter = '';
-//   },
-//   chrome: () => {
-//     effectLevel.classList.remove('hidden');
-//     imgPreview.style.filter = 'grayscale(1)';
-//   },
-//   sepia: () => {
-//     effectLevel.classList.remove('hidden');
-//     imgPreview.style.filter = 'sepia(1)';
-//   },
-//   marvin: () => {
-//     effectLevel.classList.remove('hidden');
-//     imgPreview.style.filter = 'invert(100%)';
-//   },
-//   phobos: () => {
-//     effectLevel.classList.remove('hidden');
-//     imgPreview.style.filter = 'blur(3px)';
-//   },
-//   heat: () => {
-//     effectLevel.classList.remove('hidden');
-//     imgPreview.style.filter = 'brightness(3)';
-//   },
-// };
-
-const effects = {
-  none: () => {
-    effectLevel.classList.add('hidden');
-    return 'none';
-  },
-  chrome: () => {
-    effectLevel.classList.remove('hidden');
-    return `grayscale(${parseInt(effectLevelValue.value, 10) * 0.01})`;
-  },
-  sepia: () => {
-    effectLevel.classList.remove('hidden');
-    return `sepia(${parseInt(effectLevelValue.value, 10) * 0.01})`;
-  },
-  marvin: () => {
-    effectLevel.classList.remove('hidden');
-    return `invert(${Math.floor(effectLevelValue.value)}%)`;
-  },
-  phobos: () => {
-    effectLevel.classList.remove('hidden');
-    return `blur(${(parseInt(effectLevelValue.value, 10) * 3) * 0.01})`;
-  },
-  heat: () => {
-    effectLevel.classList.remove('hidden');
-    return `brightness(${(parseInt(effectLevelValue.value, 10) * 3) * 0.01})`;
-  },
-};
-
-// Обработка кликов по списку эффектов
-const onUseFilter = (evt) => {
-  evt.preventDefault();
+const onImgUploadEffectsGroupClick = (evt) => {
   listenKeydown();
-  let target = evt.target;
-  if (!target.classList.contains('effects__preview')) {
-    target = evt.target.firstElementChild;
-  }
+  const target = evt.target;
+
   if (target.classList.contains('effects__preview')) {
-    effects[target.classList[1].replace('effects__preview--', '')]();
-    console.log(effects[target.classList[1].replace('effects__preview--', '')]());
+    effectLevelSlider.noUiSlider.set(EFFECT_LEVEL_VALUE_MAX);
+    const currentClass = target.classList[1];
+
+    effectLevelSlider.noUiSlider.on('update', (values, handle) => {
+      effectValue = values[handle];
+      imgPreview.style.filter = effects[currentClass.replace('effects__preview--', '')](effectValue);
+      effectLevelValue.value = effectValue;
+    });
   }
 };
 
@@ -119,16 +98,8 @@ const openModal = () => {
   effectLevel.classList.add('hidden');
   currentValue = 100;
   imgPreview.style.transform = 'scale(1)';
-
-  effectLevelValue.value = EFFECT_LEVEL_VALUE_MAX;
-  // effectLevelSlider.noUiSlider.set(EFFECT_LEVEL_VALUE_MAX);
+  effectValue = EFFECT_LEVEL_VALUE_MAX;
 };
-
-uploadFile.addEventListener('change', () => openModal());
-
-uploadCancel.addEventListener('click', () => closeModal());
-
-// listenKeydown();
 
 // Обработка кликов по кнопкам масштаба
 controlSmaller.addEventListener('click', () => {
@@ -153,32 +124,11 @@ controlBigger.addEventListener('click', () => {
   controlValue.value = `${currentValue}%`;
 });
 
-effectLevelSlider.noUiSlider.on('update', (values, handle) => {
-  effectLevelValue.value = values[handle];
-  console.log(values);
-});
+uploadFile.addEventListener('change', () => openModal());
 
-effectList.addEventListener('click', onUseFilter);
+uploadCancel.addEventListener('click', () => closeModal());
 
-
-// const onEffectRadioGroupClick = (evt) => {
-//   if (evt.target.classLict.contains('effects__preview')) { //effects__preview - это span с названием эффекта
-//     if (lastClass !== '') {
-//       imgPreview.classLict.remove(lastClass); // uploadPreviewImg - у меня это imgPreview
-//     }
-//     effectLevelSlider.noUiSlider.set(DEFAULT_EFFECT_LEVEL);
-//     let currentClass = evt.target.classLict[1];
-//     lastClass = currentClass;
-
-//     imgPreview.classLict.add(currentClass);
-//     imgPreview.style.filter = effects[currentClass.replace('effects__preview--', '')]();
-//   }
-// };
-
-// этот обработчик навешивается на клик по imgUploadEffectsGroup
-
-
-
+imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
 
 export {textHashtags, textDescription, body, uploadFile, uploadOverlay, openModal,
-  uploadCancel, onUseFilter, effectList, imgPreview, effectLevelSlider};
+  uploadCancel, effectList, imgPreview, effectLevelSlider, imgUploadEffectsGroup, onImgUploadEffectsGroupClick};

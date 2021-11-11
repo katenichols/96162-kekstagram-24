@@ -1,4 +1,5 @@
-import {bigPicture} from "./big-picture.js";
+// import {bigPicture} from './big-picture.js';
+import {closeModal} from './close-modal.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
@@ -74,6 +75,7 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
+// Обработчик нажания на Esc
 const onEscKeydown = (evt) => {
   if ((evt.key === 'Escape' ||
     evt.key === 'Esc') &&
@@ -83,6 +85,7 @@ const onEscKeydown = (evt) => {
   }
 };
 
+// Обработчик клика выбора эффекта
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
 
@@ -98,32 +101,18 @@ const onImgUploadEffectsGroupClick = (evt) => {
   }
 };
 
+// Функция открытия окна редактирования картинки
 const openModal = () => {
   body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');
   currentValue = 100;
+  imgPreview.style.filter = 'none';
   imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
 };
 
 document.addEventListener('keydown', onEscKeydown);
 
-
-const closeModal = () => {
-  imgPreview.style.transform = 'scale(1)';
-  imgPreview.style.filter = 'none';
-  effectLevelSlider.noUiSlider.reset();
-  console.log(imgPreview.style.filter, effectLevelSlider.noUiSlider, effectLevelValue.value);
-  uploadFile.value = '';
-  bigPicture.classList.add('hidden');
-  body.classList.remove('modal-open');
-  uploadOverlay.classList.add('hidden');
-
-  document.removeEventListener('keydown', () => onEscKeydown);
-  imgUploadEffectsGroup.removeEventListener('click', onImgUploadEffectsGroupClick);
-  uploadFile.removeEventListener('change', () => openModal());
-  uploadCancel.removeEventListener('click', () => closeModal());
-};
 
 // Обработка кликов по кнопкам масштаба
 controlSmaller.addEventListener('click', () => {

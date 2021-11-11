@@ -1,5 +1,4 @@
-import {listenKeydown} from './listener-keydown.js';
-import {closeModal} from './close-modal.js';
+import {bigPicture} from "./big-picture.js";
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
@@ -75,9 +74,16 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
+const onEscKeydown = (evt) => {
+  if ((evt.key === 'Escape' ||
+    evt.key === 'Esc') &&
+    !evt.target.classList.contains('text__hashtags') &&
+    !evt.target.classList.contains('text__description')) {
+    closeModal();
+  }
+};
 
 const onImgUploadEffectsGroupClick = (evt) => {
-  listenKeydown();
   const target = evt.target;
 
   if (target.classList.contains('effects__preview')) {
@@ -97,8 +103,26 @@ const openModal = () => {
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');
   currentValue = 100;
+  imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
+};
+
+document.addEventListener('keydown', onEscKeydown);
+
+
+const closeModal = () => {
   imgPreview.style.transform = 'scale(1)';
-  effectValue = EFFECT_LEVEL_VALUE_MAX;
+  imgPreview.style.filter = 'none';
+  effectLevelSlider.noUiSlider.reset();
+  console.log(imgPreview.style.filter, effectLevelSlider.noUiSlider, effectLevelValue.value);
+  uploadFile.value = '';
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
+  uploadOverlay.classList.add('hidden');
+
+  document.removeEventListener('keydown', () => onEscKeydown);
+  imgUploadEffectsGroup.removeEventListener('click', onImgUploadEffectsGroupClick);
+  uploadFile.removeEventListener('change', () => openModal());
+  uploadCancel.removeEventListener('click', () => closeModal());
 };
 
 // Обработка кликов по кнопкам масштаба
@@ -128,7 +152,6 @@ uploadFile.addEventListener('change', () => openModal());
 
 uploadCancel.addEventListener('click', () => closeModal());
 
-imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
-
 export {textHashtags, textDescription, body, uploadFile, uploadOverlay, openModal,
-  uploadCancel, effectList, imgPreview, effectLevelSlider, imgUploadEffectsGroup, onImgUploadEffectsGroupClick};
+  uploadCancel, effectList, imgPreview, effectLevelSlider, imgUploadEffectsGroup,
+  onImgUploadEffectsGroupClick, onEscKeydown, effectLevelValue, EFFECT_LEVEL_VALUE_MAX, closeModal};

@@ -1,5 +1,5 @@
 import {descPicture} from './create-main-array.js';
-import {onEscKeydown} from './esc-keydown.js';
+import {onEscKeydown} from './upload-form.js';
 import {drowBigPicture} from './big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture')

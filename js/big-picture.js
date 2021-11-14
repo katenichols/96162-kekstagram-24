@@ -1,5 +1,4 @@
 import {body, closeModal} from './upload-form.js';
-// import {closeModal} from './close-modal.js';
 
 const LIMIT_OF_SHOW_COMMENTS = 5;
 const bigPicture = document.querySelector('.big-picture');

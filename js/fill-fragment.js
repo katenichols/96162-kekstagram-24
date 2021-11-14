@@ -1,18 +1,17 @@
-import {descPicture} from './create-main-array.js';
 import {drawMiniPicture} from './mini-pictures.js';
 
 const pictures = document.querySelector('.pictures');
 const picturesFragment = document.createDocumentFragment();
 
 // Функция добавления копии шаблона во фрагмент
-const addToFragment = () => {
-  for (let i = 0; i < descPicture.length; i++) {
-    picturesFragment.appendChild(drawMiniPicture());
+const addToFragment = (photos) => {
+  for (let i = 0; i < photos.length; i++) {
+    picturesFragment.appendChild(drawMiniPicture(photos[i]));
   }
 
   return picturesFragment;
 };
 
-pictures.appendChild(addToFragment());
+const renderPictures = (photos) => pictures.appendChild(addToFragment(photos));
 
-export {pictures};
+export {pictures, renderPictures};

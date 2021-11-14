@@ -1,5 +1,6 @@
-// import {bigPicture} from './big-picture.js';
 import {closeModal} from './close-modal.js';
+import {request} from './api.js';
+import {errorMessage, successMessage} from './messages.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
@@ -141,6 +142,22 @@ uploadFile.addEventListener('change', () => openModal());
 
 uploadCancel.addEventListener('click', () => closeModal());
 
+const onSuccess = () => {
+  closeModal();
+  successMessage();
+};
+
+const onError = (err) => {
+  errorMessage(err);
+};
+
+uploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const formData = new FormData(evt.target);
+  request(onSuccess, onError, 'POST', formData);
+});
+
 export {textHashtags, textDescription, body, uploadFile, uploadOverlay, openModal,
   uploadCancel, effectList, imgPreview, effectLevelSlider, imgUploadEffectsGroup,
-  onImgUploadEffectsGroupClick, onEscKeydown, effectLevelValue, EFFECT_LEVEL_VALUE_MAX, closeModal};
+  onImgUploadEffectsGroupClick, onEscKeydown, effectLevelValue, EFFECT_LEVEL_VALUE_MAX,
+  closeModal};

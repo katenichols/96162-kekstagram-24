@@ -1,4 +1,3 @@
-import {onEscKeydown} from './upload-form.js';
 import {drowBigPicture} from './big-picture.js';
 
 const pictureTemplate = document.querySelector('#picture')
@@ -17,7 +16,6 @@ const drawMiniPicture = (picture) => {
   const pictureItemComments = picture.comments;
 
   pictureItem.addEventListener('click', (evt) => {
-    document.addEventListener('keydown', onEscKeydown);
     const target = evt.target;
 
     if (target.classList.contains('picture__img')) {

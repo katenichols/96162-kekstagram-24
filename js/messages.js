@@ -1,4 +1,3 @@
-import {closeModal} from './close-modal.js';
 import {openModal, body} from './upload-form.js';
 import {escKey} from './util.js';
 
@@ -58,11 +57,9 @@ const errorUploadMessage = () => {
 };
 
 const onEscMessage = (evt) => {
-  try {
-    if(escKey(evt)) {
-      removeHandler();
-    }
-  } catch {}
+  if(escKey(evt)) {
+    removeHandler();
+  }
 };
 
 document.addEventListener('keydown', onEscMessage);

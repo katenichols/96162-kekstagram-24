@@ -111,9 +111,7 @@ const openModal = () => {
 
   const newFile = uploadFile.files[0];
   const newFileName = newFile.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => {
-    return newFileName.endsWith(it);
-  });
+  const matches = FILE_TYPES.some((it) => newFileName.endsWith(it));
 
   if (matches) {
     imgPreview.src = URL.createObjectURL(newFile);

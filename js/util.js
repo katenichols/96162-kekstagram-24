@@ -1,21 +1,14 @@
-// Функция получения случайного числа из диапазона
-const getRandomIntNumber = (min, max) => {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-
-  if (min < 0 || max < 0) {
-    return -1;
-  } else if (max < min) {
-    [min, max] = [max, min];
-  }
-
-  return Math.floor(Math.random() * (max - min + 1)) + min; //источник - MDN
-};
-
 // Функция получения элемента массива
-const getRandomArrayElement = (elements) => elements[getRandomIntNumber(0, elements.length - 1)];
-
-export {getRandomIntNumber, getRandomArrayElement};
+const getRandomArrayElement = (elements, count) => {
+  const copyElements = elements.slice();
+  const result = [];
+  for (let i = 0; i < count; i++) {
+    const index = Math.floor(Math.random() * copyElements.length);
+    result.push(copyElements[index]);
+    copyElements.splice(index, 1);
+  }
+  return result;
+};
 
 const escKey = (evt) => {
   if ((evt.key === 'Escape' ||
@@ -26,4 +19,29 @@ const escKey = (evt) => {
   }
 };
 
-export {escKey};
+// Функция взята из интернета и доработана
+// Источник - https://www.freecodecamp.org/news/javascript-debounce-example
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+// // Функция взята из интернета и доработана
+// // Источник - https://github.com/you-dont-need/You-Dont-Need-Lodash-Underscore#_throttle
+// const throttle = (callback, delayBetweenFrames) => {
+//   let lastTime = 0;
+
+//   return (...rest) => {
+//     const now = new Date();
+//     if (now - lastTime >= delayBetweenFrames) {
+//       callback.apply(this, rest);
+//       lastTime = now;
+//     }
+//   };
+// };
+
+export {getRandomArrayElement, escKey, debounce};

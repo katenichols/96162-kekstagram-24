@@ -1,11 +1,13 @@
 import {closeModal} from './close-modal.js';
 import {request} from './api.js';
-import {successMessage, onEscKeydown, errorUploadMessage} from './messages.js';
+import {successMessage, errorUploadMessage} from './messages.js';
+import {escKey} from './util.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const EFFECT_LEVEL_VALUE_MAX = 100;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const body = document.querySelector('body');
 const uploadForm = body.querySelector('.img-upload__form');
@@ -76,6 +78,15 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
+// Обработчик нажания на Esc
+const onEscKeydown = (evt) => {
+  if(escKey(evt)) {
+    closeModal();
+  }
+};
+
+document.addEventListener('keydown', onEscKeydown);
+
 // Обработчик клика выбора эффекта
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
@@ -97,6 +108,17 @@ const openModal = () => {
   body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');
+
+  const newFile = uploadFile.files[0];
+  const newFileName = newFile.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => {
+    return newFileName.endsWith(it);
+  });
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(newFile);
+  }
+
   currentValue = 100;
   imgPreview.style.filter = 'none';
   imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);

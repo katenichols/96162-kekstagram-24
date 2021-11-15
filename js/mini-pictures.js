@@ -1,4 +1,3 @@
-import {descPicture} from './create-main-array.js';
 import {onEscKeydown} from './upload-form.js';
 import {drowBigPicture} from './big-picture.js';
 
@@ -6,34 +5,28 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-let elemIndex = 0;
-
 // Функция отрисовки миниатюры фото
-function drawMiniPicture(pictureItem) {
-  if (elemIndex <= descPicture.length) {
-    pictureItem = pictureTemplate.cloneNode(true);
+const drawMiniPicture = (picture) => {
+  const pictureItem = pictureTemplate.cloneNode(true);
 
-    pictureItem.querySelector('.picture__img').src = descPicture[elemIndex].url;
-    pictureItem.querySelector('.picture__likes').textContent = descPicture[elemIndex].likes;
-    pictureItem.querySelector('.picture__comments').textContent = descPicture[elemIndex].comments.length;
+  pictureItem.querySelector('.picture__img').src = picture.url;
+  pictureItem.querySelector('.picture__likes').textContent = picture.likes;
+  pictureItem.querySelector('.picture__comments').textContent = picture.comments.length;
 
-    const pictureItemDescription = descPicture[elemIndex].description;
-    const pictureItemComments = descPicture[elemIndex].comments;
+  const pictureItemDescription = picture.description;
+  const pictureItemComments = picture.comments;
 
-    pictureItem.addEventListener('click', (evt) => {
-      document.addEventListener('keydown', onEscKeydown);
-      const target = evt.target;
+  pictureItem.addEventListener('click', (evt) => {
+    document.addEventListener('keydown', onEscKeydown);
+    const target = evt.target;
 
-      if (target.classList.contains('picture__img')) {
-        drowBigPicture(target.src, pictureItem.querySelector('.picture__likes'), pictureItem.querySelector('.picture__comments'),
-          pictureItemDescription, pictureItemComments);
-      }
-    });
-  }
-
-  elemIndex++;
+    if (target.classList.contains('picture__img')) {
+      drowBigPicture(target.src, pictureItem.querySelector('.picture__likes'), pictureItem.querySelector('.picture__comments'),
+        pictureItemDescription, pictureItemComments);
+    }
+  });
 
   return pictureItem;
-}
+};
 
 export {drawMiniPicture};

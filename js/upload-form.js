@@ -1,6 +1,6 @@
 import {closeModal} from './close-modal.js';
 import {request} from './api.js';
-import {errorMessage, successMessage} from './messages.js';
+import {successMessage, onEscKeydown, errorUploadMessage} from './messages.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
@@ -76,16 +76,6 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
-// Обработчик нажания на Esc
-const onEscKeydown = (evt) => {
-  if ((evt.key === 'Escape' ||
-    evt.key === 'Esc') &&
-    !evt.target.classList.contains('text__hashtags') &&
-    !evt.target.classList.contains('text__description')) {
-    closeModal();
-  }
-};
-
 // Обработчик клика выбора эффекта
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
@@ -111,9 +101,6 @@ const openModal = () => {
   imgPreview.style.filter = 'none';
   imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
 };
-
-document.addEventListener('keydown', onEscKeydown);
-
 
 // Обработка кликов по кнопкам масштаба
 controlSmaller.addEventListener('click', () => {
@@ -148,11 +135,12 @@ const onSuccess = () => {
 };
 
 const onError = (err) => {
-  errorMessage(err);
+  errorUploadMessage(err);
 };
 
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
+  closeModal();
   const formData = new FormData(evt.target);
   request(onSuccess, onError, 'POST', formData);
 });

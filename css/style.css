@@ -1206,6 +1206,7 @@ main {
  */
 
 .error,
+.error-download,
 .success {
   position: fixed;
   display: flex;
@@ -1242,6 +1243,10 @@ main {
 
   background-color: #3c3614;
   border-radius: 10px;
+}
+
+.error__inner--download {
+  background-color: #bd0000;
 }
 
 .success__inner {

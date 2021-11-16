@@ -1,5 +1,5 @@
-import {closeModal} from './close-modal.js';
 import {openModal, body} from './upload-form.js';
+import {escKey} from './util.js';
 
 const errorDownloadTemplate = document.querySelector('#error-download')
   .content
@@ -11,60 +11,57 @@ const successUploadTemplate = document.querySelector('#success')
   .content
   .querySelector('.success');
 
-// Обработчик нажания на Esc
-const onEscKeydown = (evt) => {
-  if ((evt.key === 'Escape' ||
-    evt.key === 'Esc') &&
-    !evt.target.classList.contains('text__hashtags') &&
-    !evt.target.classList.contains('text__description')) {
-    closeModal();
-  }
-};
+let temporarySection;
 
-document.addEventListener('keydown', onEscKeydown);
-
-const removeHandler = (elem) => {
-  closeModal();
-  body.removeChild(elem);
+const removeHandler = () => {
+  body.removeChild(temporarySection);
 };
 
 const errorDownloadMessage = () => {
-  const errorDownloadSection = errorDownloadTemplate.cloneNode(true);
-  body.appendChild(errorDownloadSection);
+  temporarySection = errorDownloadTemplate.cloneNode(true);
+  body.appendChild(temporarySection);
 
-  errorDownloadSection.addEventListener('click', (evt) => {
+  temporarySection.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('error-download') ||
       evt.target.classList.contains('error__button')) {
-      removeHandler(errorDownloadSection);
+      removeHandler();
     }
   });
 };
 
 const successMessage = () => {
-  const successSection = successUploadTemplate.cloneNode(true);
-  body.appendChild(successSection);
+  temporarySection = successUploadTemplate.cloneNode(true);
+  body.appendChild(temporarySection);
 
-  successSection.addEventListener('click', (evt) => {
+  temporarySection.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('success') ||
       evt.target.classList.contains('success__button')) {
-      removeHandler(successSection);
+      removeHandler();
     }
   });
 };
 
 const errorUploadMessage = () => {
-  const errorUploadSection = errorUploadTemplate.cloneNode(true);
-  body.appendChild(errorUploadSection);
+  temporarySection = errorUploadTemplate.cloneNode(true);
+  body.appendChild(temporarySection);
 
-  errorUploadSection.addEventListener('click', (evt) => {
+  temporarySection.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('error')) {
-      removeHandler(errorUploadSection);
+      removeHandler(temporarySection);
     }
     if (evt.target.classList.contains('error__button')) {
-      removeHandler(errorUploadSection);
+      removeHandler();
       openModal();
     }
   });
 };
 
-export {errorDownloadMessage, successMessage, onEscKeydown, errorUploadMessage};
+const onEscMessage = (evt) => {
+  if(escKey(evt)) {
+    removeHandler();
+  }
+};
+
+document.addEventListener('keydown', onEscMessage);
+
+export {errorDownloadMessage, successMessage, errorUploadMessage};

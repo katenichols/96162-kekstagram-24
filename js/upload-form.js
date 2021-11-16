@@ -1,11 +1,13 @@
 import {closeModal} from './close-modal.js';
 import {request} from './api.js';
-import {successMessage, onEscKeydown, errorUploadMessage} from './messages.js';
+import {successMessage, errorUploadMessage} from './messages.js';
+import {escKey} from './util.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
 const MAX_VALUE = 100;
 const EFFECT_LEVEL_VALUE_MAX = 100;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 const body = document.querySelector('body');
 const uploadForm = body.querySelector('.img-upload__form');
@@ -28,7 +30,6 @@ const imgUploadEffectsGroup = uploadForm.querySelector('.img-upload__effects');
 let effectValue = effectLevelValue.value;
 let currentValue = 100;
 
-// Применяемые фильтры
 const effects = {
   none: () => {
     effectLevel.classList.add('hidden');
@@ -56,7 +57,6 @@ const effects = {
   },
 };
 
-// Определение слайдера
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 0,
@@ -76,7 +76,14 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
-// Обработчик клика выбора эффекта
+const onEscKeydown = (evt) => {
+  if(escKey(evt)) {
+    closeModal();
+  }
+};
+
+document.addEventListener('keydown', onEscKeydown);
+
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
 
@@ -92,17 +99,24 @@ const onImgUploadEffectsGroupClick = (evt) => {
   }
 };
 
-// Функция открытия окна редактирования картинки
 const openModal = () => {
   body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');
+
+  const newFile = uploadFile.files[0];
+  const newFileName = newFile.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => newFileName.endsWith(it));
+
+  if (matches) {
+    imgPreview.src = URL.createObjectURL(newFile);
+  }
+
   currentValue = 100;
   imgPreview.style.filter = 'none';
   imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
 };
 
-// Обработка кликов по кнопкам масштаба
 controlSmaller.addEventListener('click', () => {
   currentValue -= VALUE_STEP;
   if (currentValue > MIN_VALUE) {

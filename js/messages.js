@@ -57,8 +57,12 @@ const errorUploadMessage = () => {
 };
 
 const onEscMessage = (evt) => {
-  if(escKey(evt)) {
-    removeHandler();
+  try {
+    if(escKey(evt)) {
+      removeHandler();
+    }
+  } catch(err) {
+    document.removeEventListener('keydown', onEscMessage);
   }
 };
 

@@ -155,6 +155,7 @@ const onError = (err) => {
 uploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   closeModal();
+  console.log(evt.target);
   const formData = new FormData(evt.target);
   request(onSuccess, onError, 'POST', formData);
 });

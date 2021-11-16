@@ -1,3 +1,5 @@
+import {body, temporarySection, onEscMessage} from './messages.js';
+
 const getRandomArrayElement = (elements, count) => {
   const copyElements = elements.slice();
   const result = [];
@@ -27,4 +29,9 @@ const debounce = (callback, timeoutDelay) => {
   };
 };
 
-export {getRandomArrayElement, escKey, debounce};
+const removeHandler = () => {
+  body.removeChild(temporarySection);
+  document.removeEventListener('keydown', onEscMessage);
+};
+
+export {getRandomArrayElement, escKey, debounce, removeHandler};

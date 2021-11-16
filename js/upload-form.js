@@ -1,7 +1,7 @@
 import {closeModal} from './close-modal.js';
 import {request} from './api.js';
 import {successMessage, errorUploadMessage} from './messages.js';
-import {escKey} from './util.js';
+import {escKey} from './utils.js';
 
 const VALUE_STEP = 25;
 const MIN_VALUE = 25;
@@ -82,7 +82,7 @@ const onEscKeydown = (evt) => {
   }
 };
 
-document.addEventListener('keydown', onEscKeydown);
+// document.addEventListener('keydown', onEscKeydown);
 
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
@@ -100,6 +100,7 @@ const onImgUploadEffectsGroupClick = (evt) => {
 };
 
 const openModal = () => {
+  document.addEventListener('keydown', onEscKeydown);
   body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
   effectLevel.classList.add('hidden');

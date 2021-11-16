@@ -1,5 +1,5 @@
 import {openModal, body} from './upload-form.js';
-import {escKey} from './util.js';
+import {escKey, removeHandler} from './utils.js';
 
 const errorDownloadTemplate = document.querySelector('#error-download')
   .content
@@ -13,11 +13,14 @@ const successUploadTemplate = document.querySelector('#success')
 
 let temporarySection;
 
-const removeHandler = () => {
-  body.removeChild(temporarySection);
+const onEscMessage = (evt) => {
+  if (escKey(evt)) {
+    removeHandler();
+  }
 };
 
 const errorDownloadMessage = () => {
+  document.addEventListener('keydown', onEscMessage);
   temporarySection = errorDownloadTemplate.cloneNode(true);
   body.appendChild(temporarySection);
 
@@ -30,6 +33,7 @@ const errorDownloadMessage = () => {
 };
 
 const successMessage = () => {
+  document.addEventListener('keydown', onEscMessage);
   temporarySection = successUploadTemplate.cloneNode(true);
   body.appendChild(temporarySection);
 
@@ -42,6 +46,7 @@ const successMessage = () => {
 };
 
 const errorUploadMessage = () => {
+  document.addEventListener('keydown', onEscMessage);
   temporarySection = errorUploadTemplate.cloneNode(true);
   body.appendChild(temporarySection);
 
@@ -56,16 +61,5 @@ const errorUploadMessage = () => {
   });
 };
 
-const onEscMessage = (evt) => {
-  try {
-    if(escKey(evt)) {
-      removeHandler();
-    }
-  } catch(err) {
-    document.removeEventListener('keydown', onEscMessage);
-  }
-};
-
-document.addEventListener('keydown', onEscMessage);
-
-export {errorDownloadMessage, successMessage, errorUploadMessage};
+export {errorDownloadMessage, successMessage, errorUploadMessage,
+  body, temporarySection, onEscMessage};

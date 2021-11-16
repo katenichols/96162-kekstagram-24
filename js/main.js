@@ -5,7 +5,7 @@ import './upload-form.js';
 import './hashtags-validity.js';
 import './comments-validity.js';
 import {errorDownloadMessage} from './messages.js';
-import {getRandomArrayElement, debounce} from './util.js';
+import {getRandomArrayElement, debounce} from './utils.js';
 
 const MAX_RANDOM_PICTURES = 10;
 const RERENDER_DELAY = 500;
@@ -34,10 +34,14 @@ const swapActiveClass = (evt) => {
   }
 };
 
-const onDefaultButtonClick = (evt) => {
+const doActionButtonsClick = (evt, array) => {
   clearPictures();
-  renderPictures(descPicture);
+  renderPictures(array);
   swapActiveClass(evt);
+};
+
+const onDefaultButtonClick = (evt) => {
+  doActionButtonsClick(evt, descPicture);
 };
 
 const onRandomButtonClick = (evt) => {
@@ -45,17 +49,13 @@ const onRandomButtonClick = (evt) => {
   for (let i = 0; i < MAX_RANDOM_PICTURES; i++) {
     randomDescPicture = getRandomArrayElement(descPicture, MAX_RANDOM_PICTURES);
   }
-  clearPictures();
-  renderPictures(randomDescPicture);
-  swapActiveClass(evt);
+  doActionButtonsClick(evt, randomDescPicture);
 };
 
 const onDiscussedButtonClick = (evt) => {
   const sortedDescPicture = descPicture.slice().sort((a, b) =>
     b.comments.length - a.comments.length);
-  clearPictures();
-  renderPictures(sortedDescPicture);
-  swapActiveClass(evt);
+  doActionButtonsClick(evt, sortedDescPicture);
 };
 
 const onSuccess = (data) => {

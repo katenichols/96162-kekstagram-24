@@ -1,8 +1,8 @@
 import {body, uploadOverlay, uploadFile, openModal, uploadCancel, imgUploadEffectsGroup,
-  onImgUploadEffectsGroupClick,   imgPreview, effectLevelSlider, onEscKeydown, textHashtags, textDescription} from './upload-form.js';
+  onImgUploadEffectsGroupClick,   imgPreview, effectLevelSlider, onEscKeydown, textHashtags,
+  textDescription} from './upload-form.js';
 import {bigPicture} from './big-picture.js';
 
-// Функция закрытия окна редактирования картинки
 const closeModal = () => {
   imgPreview.style.transform = 'scale(1)';
   textDescription.value = '';

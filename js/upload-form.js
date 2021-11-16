@@ -30,7 +30,6 @@ const imgUploadEffectsGroup = uploadForm.querySelector('.img-upload__effects');
 let effectValue = effectLevelValue.value;
 let currentValue = 100;
 
-// Применяемые фильтры
 const effects = {
   none: () => {
     effectLevel.classList.add('hidden');
@@ -58,7 +57,6 @@ const effects = {
   },
 };
 
-// Определение слайдера
 noUiSlider.create(effectLevelSlider, {
   range: {
     min: 0,
@@ -78,7 +76,6 @@ noUiSlider.create(effectLevelSlider, {
   },
 });
 
-// Обработчик нажания на Esc
 const onEscKeydown = (evt) => {
   if(escKey(evt)) {
     closeModal();
@@ -87,7 +84,6 @@ const onEscKeydown = (evt) => {
 
 document.addEventListener('keydown', onEscKeydown);
 
-// Обработчик клика выбора эффекта
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
 
@@ -103,7 +99,6 @@ const onImgUploadEffectsGroupClick = (evt) => {
   }
 };
 
-// Функция открытия окна редактирования картинки
 const openModal = () => {
   body.classList.add('modal-open');
   uploadOverlay.classList.remove('hidden');
@@ -122,7 +117,6 @@ const openModal = () => {
   imgUploadEffectsGroup.addEventListener('click', onImgUploadEffectsGroupClick);
 };
 
-// Обработка кликов по кнопкам масштаба
 controlSmaller.addEventListener('click', () => {
   currentValue -= VALUE_STEP;
   if (currentValue > MIN_VALUE) {

@@ -3,15 +3,12 @@ import {textHashtags} from './upload-form.js';
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
 
-// Функция валидации поля для хештегов
-
 textHashtags.addEventListener('input', () => {
   textHashtags.setCustomValidity('');
   const invalidHashtagMessage = [];
 
   const inputText = textHashtags.value.toLowerCase().trim();
 
-  // Функция отмены красной рамки
   const outlineIfNotError = () => {
     textHashtags.style.outline = 'none';
     textHashtags.style.outlineOffset = '0';

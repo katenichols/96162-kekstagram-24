@@ -4,7 +4,6 @@ const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-// Функция отрисовки миниатюры фото
 const drawMiniPicture = (picture) => {
   const pictureItem = pictureTemplate.cloneNode(true);
 

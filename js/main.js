@@ -27,34 +27,35 @@ const clearPictures = () => {
   });
 };
 
-const onDefaultButtonClick = () => {
-  clearPictures();
-  renderPictures(descPicture);
-  defaultButton.classList.add('img-filters__button--active');
-  randomButton.classList.remove('img-filters__button--active');
-  discussedButton.classList.remove('img-filters__button--active');
+const swapActiveClass = (evt) => {
+  if (evt.target.classList.contains('img-filters__button')) {
+    imgFilters.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
+    evt.target.classList.add('img-filters__button--active');
+  }
 };
 
-const onRandomButtonClick = () => {
+const onDefaultButtonClick = (evt) => {
+  clearPictures();
+  renderPictures(descPicture);
+  swapActiveClass(evt);
+};
+
+const onRandomButtonClick = (evt) => {
   let randomDescPicture = [];
   for (let i = 0; i < MAX_RANDOM_PICTURES; i++) {
     randomDescPicture = getRandomArrayElement(descPicture, MAX_RANDOM_PICTURES);
   }
   clearPictures();
   renderPictures(randomDescPicture);
-  defaultButton.classList.remove('img-filters__button--active');
-  randomButton.classList.add('img-filters__button--active');
-  discussedButton.classList.remove('img-filters__button--active');
+  swapActiveClass(evt);
 };
 
-const onDiscussedButtonClick = () => {
+const onDiscussedButtonClick = (evt) => {
   const sortedDescPicture = descPicture.slice().sort((a, b) =>
     b.comments.length - a.comments.length);
   clearPictures();
   renderPictures(sortedDescPicture);
-  defaultButton.classList.remove('img-filters__button--active');
-  randomButton.classList.remove('img-filters__button--active');
-  discussedButton.classList.add('img-filters__button--active');
+  swapActiveClass(evt);
 };
 
 const onSuccess = (data) => {

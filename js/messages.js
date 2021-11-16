@@ -61,7 +61,7 @@ const onEscMessage = (evt) => {
     if(escKey(evt)) {
       removeHandler();
     }
-  } catch {
+  } catch(err) {
     document.removeEventListener('keydown', onEscMessage);
   }
 };

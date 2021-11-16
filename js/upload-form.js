@@ -82,8 +82,6 @@ const onEscKeydown = (evt) => {
   }
 };
 
-// document.addEventListener('keydown', onEscKeydown);
-
 const onImgUploadEffectsGroupClick = (evt) => {
   const target = evt.target;
 

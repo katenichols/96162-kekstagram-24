@@ -2,13 +2,13 @@ import {body, temporarySection, onEscMessage} from './messages.js';
 
 const getRandomArrayElement = (elements, count) => {
   const copyElements = elements.slice();
-  const result = [];
+  const results = [];
   for (let i = 0; i < count; i++) {
     const index = Math.floor(Math.random() * copyElements.length);
-    result.push(copyElements[index]);
+    results.push(copyElements[index]);
     copyElements.splice(index, 1);
   }
-  return result;
+  return results;
 };
 
 const escKey = (evt) => {

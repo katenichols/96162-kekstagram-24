@@ -15,7 +15,7 @@ const defaultButton = imgFilters.querySelector('#filter-default');
 const randomButton = imgFilters.querySelector('#filter-random');
 const discussedButton = imgFilters.querySelector('#filter-discussed');
 
-let descPicture = [];
+let descPictures = [];
 
 const showFilter = () => {
   imgFilters.classList.remove('img-filters--inactive');
@@ -41,26 +41,26 @@ const doActionButtonsClick = (evt, array) => {
 };
 
 const onDefaultButtonClick = (evt) => {
-  doActionButtonsClick(evt, descPicture);
+  doActionButtonsClick(evt, descPictures);
 };
 
 const onRandomButtonClick = (evt) => {
-  let randomDescPicture = [];
+  let randomDescPictures = [];
   for (let i = 0; i < MAX_RANDOM_PICTURES; i++) {
-    randomDescPicture = getRandomArrayElement(descPicture, MAX_RANDOM_PICTURES);
+    randomDescPictures = getRandomArrayElement(descPictures, MAX_RANDOM_PICTURES);
   }
-  doActionButtonsClick(evt, randomDescPicture);
+  doActionButtonsClick(evt, randomDescPictures);
 };
 
 const onDiscussedButtonClick = (evt) => {
-  const sortedDescPicture = descPicture.slice().sort((a, b) =>
+  const sorteddescPictures = descPictures.slice().sort((a, b) =>
     b.comments.length - a.comments.length);
-  doActionButtonsClick(evt, sortedDescPicture);
+  doActionButtonsClick(evt, sorteddescPictures);
 };
 
 const onSuccess = (data) => {
-  descPicture = data.slice();
-  renderPictures(descPicture);
+  descPictures = data.slice();
+  renderPictures(descPictures);
   showFilter();
 
   defaultButton.addEventListener('click', debounce(onDefaultButtonClick, RERENDER_DELAY));

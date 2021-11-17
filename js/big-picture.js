@@ -1,4 +1,4 @@
-import {body, closeModal} from './upload-form.js';
+import {body, closeModal, onEscKeydown} from './upload-form.js';
 
 const LIMIT_OF_SHOW_COMMENTS = 5;
 const bigPicture = document.querySelector('.big-picture');
@@ -12,7 +12,7 @@ const socialCommentsItem = bigPictureSocial.querySelector('.social__comment');
 const socialCommentsCount = bigPictureSocial.querySelector('.social__comment-count');
 const commentsLoader = bigPictureSocial.querySelector('.comments-loader');
 const socialCaption = bigPictureSocial.querySelector('.social__caption');
-let showArray = [];
+let showArrays = [];
 let shownComments = 0;
 
 bigPictureCancel.addEventListener('click', () => closeModal());
@@ -54,45 +54,46 @@ const commentsCountLabel = (shownCommentsNumbers, totalLength) => {
 
 const showHiddenElements = (index, count) => {
   for (let y = index; y < count; y++) {
-    showArray[y].classList.remove('hidden');
+    showArrays[y].classList.remove('hidden');
   }
 };
 
 const showNextComments = (evt) => {
   evt.preventDefault();
-  if ((showArray.length - shownComments) <= LIMIT_OF_SHOW_COMMENTS) {
-    showHiddenElements(showArray.length - shownComments, showArray.length);
+  if ((showArrays.length - shownComments) <= LIMIT_OF_SHOW_COMMENTS) {
+    showHiddenElements(showArrays.length - shownComments, showArrays.length);
     commentsLoader.classList.add('hidden');
     commentsLoader.removeEventListener('click', showNextComments);
-    shownComments = showArray.length;
+    shownComments = showArrays.length;
   } else {
     commentsLoader.classList.remove('hidden');
     shownComments += LIMIT_OF_SHOW_COMMENTS;
     showHiddenElements(shownComments - LIMIT_OF_SHOW_COMMENTS, shownComments);
   }
-  commentsCountLabel(shownComments, showArray.length);
+  commentsCountLabel(shownComments, showArrays.length);
 };
 
 const showComments = () => {
-  showArray = Array.from(socialComments.querySelectorAll('.social__comment'));
+  showArrays = Array.from(socialComments.querySelectorAll('.social__comment'));
   commentsLoader.classList.remove('hidden');
   shownComments = 0;
 
-  if (showArray.length <= LIMIT_OF_SHOW_COMMENTS) {
+  if (showArrays.length <= LIMIT_OF_SHOW_COMMENTS) {
     commentsLoader.classList.add('hidden');
-    commentsCountLabel(showArray.length, showArray.length);
+    commentsCountLabel(showArrays.length, showArrays.length);
   } else {
     commentsLoader.classList.remove('hidden');
-    for (let i = LIMIT_OF_SHOW_COMMENTS; i < showArray.length; i++) {
-      showArray[i].classList.add('hidden');
+    for (let i = LIMIT_OF_SHOW_COMMENTS; i < showArrays.length; i++) {
+      showArrays[i].classList.add('hidden');
     }
     shownComments += LIMIT_OF_SHOW_COMMENTS;
-    commentsCountLabel(shownComments, showArray.length);
+    commentsCountLabel(shownComments, showArrays.length);
     commentsLoader.addEventListener('click', showNextComments);
   }
 };
 
 const drowBigPicture = (src, likes, comments, description, commentsArray) => {
+  document.addEventListener('keydown', onEscKeydown);
   bigPicture.classList.remove('hidden');
   body.classList.remove('modal-open');
   bigPictureImg.src = src;
